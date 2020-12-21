@@ -1,7 +1,7 @@
 title = "Super blog"
 author = "Vincent Parizet"
 
-# baseURL = "http://example.org/"
+baseURL = "https://confident-bell-ae0818.netlify.app/"
 languageCode = "en-us"
 theme = "contrast-hugo"
 
