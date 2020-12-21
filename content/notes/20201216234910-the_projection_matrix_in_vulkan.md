@@ -5456,7 +5456,7 @@ style="fill:rgb(31,123,254);fill-rule:nonzero;"/> </g> </g> </g>
 
 
 <div class="figure-caption">
-  Figure 3: Side view of the frustum, the top view with \\(x\_p\\) and \\(x\_e\\) is similar
+  Figure 3: Side view of the frustum, the top view is similar
 </div>
 
 The intercept theorem tells us that the ratio between a point projected on the near plane and the coordinate in eye space is the same: \\[ \frac{x\_p}{x\_e} = \frac{y\_p}{y\_e} = \frac{z\_p}{z\_e} = \frac{-n}{z\_e} \\]
@@ -5475,7 +5475,7 @@ One thing to note here is that \\(x\_p\\) and \\(y\_p\\) are inversely proportio
 But the result of a multiplication between a matrix and a vector is a linear combination of its components, it's **not** possible to divide by a component.
 Fortunately for us, the hardware will divide the components of each clip coordinate by \\(w\_c\\), so we will take advantage of it and set it to \\(-z\_e\\).
 
-\\[ w\_c = -1 \* z\_e \\]
+\\[ w\_c = -1 \times z\_e \\]
 
 \begin{equation}
 \begin{pmatrix}
@@ -5502,6 +5502,28 @@ w\_c
 ## Mapping from the near frustum plane to the near clip plane {#mapping-from-the-near-frustum-plane-to-the-near-clip-plane}
 
 Now that we have expressed \\(x\_p\\) and \\(y\_p\\) in terms of \\(x\_e\\) and \\(y\_e\\), let's try to express their normalized device coordinates \\(x\_n\\) and \\(y\_n\\).
+The normalized device coordinates are the clip coordinates divided by their 4th component:
+
+\begin{aligned}
+\begin{pmatrix}
+x\_n \\\\\\
+y\_n \\\\\\
+z\_n \\\\\\
+w\_n
+\end{pmatrix}=
+\begin{pmatrix}
+\frac{x\_c}{w\_c} \\\\\\
+\frac{y\_c}{w\_c} \\\\\\
+\frac{z\_c}{w\_c} \\\\\\
+\frac{w\_c}{w\_c}
+\end{pmatrix}
+\end{aligned}
+
+The near plane of our frustum is defined by 4 corners \\((l, t)\\), \\((r, t)\\), \\((r, b)\\) and \\((l, b)\\).
+We want to match these with \\((-1, -1)\\), \\((1, -1)\\), \\((1, 1)\\) and \\((-1, 1)\\) respectively.
+
+**<span class="underline">Note</span>**: If you have a different clip space, you will have to adjust the corners of the near clip plane!
+Vulkan is different from other graphics APIs and uses a downward Y axis, and uses the same clip depth as DirectX (0 to 1).
 
 <svg width="100%"
 height="100%" viewBox="0 0 1490 590" version="1.1"
@@ -6370,52 +6392,52 @@ d="M354.372,292.92C354.372,290.588 354.765,287.881
 356.925,302.147C356.294,301.231 355.764,300.202
 355.336,299.06C354.694,297.275 354.372,295.228 354.372,292.92Z"
 style="fill-rule:nonzero;stroke:rgb(255,0,0);stroke-width:0.17px;stroke-linecap:butt;stroke-miterlimit:2;"/>
-<path d="M366.58,287.423C366.676,286.59 366.878,286.114
-367.187,285.995C367.282,285.947 367.437,285.923
-367.651,285.923L374.755,285.923C375.278,285.923 375.54,286.09
-375.54,286.423C375.54,286.471 375.528,286.578
-375.504,286.744C375.481,286.911 375.427,287.113
-375.344,287.351C375.26,287.589 375.159,287.744
-375.04,287.815C374.898,287.887 374.719,287.922
-374.505,287.922L367.366,287.922C366.842,287.922 366.58,287.756
-366.58,287.423Z"
+<path d="M367.687,294.169C367.687,293.86 367.764,293.669
+367.919,293.598C368.074,293.527 368.329,293.491
+368.686,293.491L368.972,293.491C370.305,293.491 371.161,293.396
+371.542,293.205C371.923,293.015 372.185,292.611
+372.327,291.992L376.54,275.072C375.231,276.048 373.91,276.535
+372.577,276.535C372.197,276.535 372.006,276.393
+372.006,276.107C372.006,275.726 372.197,275.5
+372.577,275.429C374.933,275.191 377.027,273.846
+378.86,271.395C379.169,271.014 379.395,270.824
+379.538,270.824C379.824,270.824 379.966,270.954
+379.966,271.214C379.966,271.301 379.931,271.443
+379.859,271.638L374.755,291.995C374.683,292.302 374.648,292.545
+374.648,292.724C374.648,292.98 374.707,293.146
+374.826,293.222C374.945,293.299 375.219,293.363
+375.647,293.414C376.266,293.465 376.777,293.491
+377.182,293.491L377.468,293.491C377.706,293.491 377.878,293.497
+377.985,293.509C378.092,293.521 378.187,293.556
+378.271,293.616C378.354,293.675 378.396,293.777
+378.396,293.919C378.396,294.372 378.158,294.598
+377.682,294.598C377.158,294.598 376.361,294.58
+375.29,294.544C374.219,294.508 373.422,294.491
+372.899,294.491C372.399,294.491 371.625,294.508
+370.578,294.544C369.531,294.58 368.746,294.598
+368.222,294.598C367.865,294.598 367.687,294.455 367.687,294.169Z"
 style="fill-rule:nonzero;stroke:rgb(255,0,0);stroke-width:0.17px;stroke-linecap:butt;stroke-miterlimit:2;"/>
-<path d="M380.466,294.169C380.466,293.86 380.543,293.669
-380.698,293.598C380.853,293.527 381.109,293.491
-381.466,293.491L381.751,293.491C383.084,293.491 383.94,293.396
-384.321,293.205C384.702,293.015 384.964,292.611
-385.107,291.992L389.319,275.072C388.01,276.048 386.689,276.535
-385.356,276.535C384.976,276.535 384.785,276.393
-384.785,276.107C384.785,275.726 384.976,275.5
-385.356,275.429C387.712,275.191 389.807,273.846
-391.639,271.395C391.948,271.014 392.174,270.824
-392.317,270.824C392.603,270.824 392.746,270.954
-392.746,271.214C392.746,271.301 392.71,271.443
-392.638,271.638L387.534,291.995C387.463,292.302 387.427,292.545
-387.427,292.724C387.427,292.98 387.486,293.146
-387.605,293.222C387.724,293.299 387.998,293.363
-388.426,293.414C389.045,293.465 389.557,293.491
-389.961,293.491L390.247,293.491C390.485,293.491 390.657,293.497
-390.764,293.509C390.871,293.521 390.967,293.556
-391.05,293.616C391.133,293.675 391.175,293.777
-391.175,293.919C391.175,294.372 390.937,294.598
-390.461,294.598C389.937,294.598 389.14,294.58
-388.069,294.544C386.998,294.508 386.201,294.491
-385.678,294.491C385.178,294.491 384.405,294.508
-383.357,294.544C382.31,294.58 381.525,294.598
-381.002,294.598C380.645,294.598 380.466,294.455 380.466,294.169Z"
+<path d="M384.273,301.13C384.273,301.035 384.428,300.833
+384.737,300.523C386.927,298.667 388.251,296.513
+388.71,294.062C388.274,294.419 387.804,294.598
+387.299,294.598C386.29,294.598 385.785,294.098
+385.785,293.098C385.785,292.527 385.997,292.004
+386.421,291.528C386.846,291.052 387.379,290.814
+388.021,290.814C389.077,290.814 389.604,291.516
+389.604,292.92C389.604,294.205 389.233,295.549
+388.492,296.954C387.75,298.358 386.986,299.464
+386.201,300.273C385.416,301.082 384.892,301.487
+384.63,301.487C384.392,301.487 384.273,301.368 384.273,301.13Z"
 style="fill-rule:nonzero;stroke:rgb(255,0,0);stroke-width:0.17px;stroke-linecap:butt;stroke-miterlimit:2;"/>
-<path d="M397.052,301.13C397.052,301.035 397.207,300.833
-397.517,300.523C399.706,298.667 401.03,296.513
-401.489,294.062C401.053,294.419 400.583,294.598
-400.078,294.598C399.069,294.598 398.564,294.098
-398.564,293.098C398.564,292.527 398.776,292.004
-399.201,291.528C399.625,291.052 400.158,290.814
-400.801,290.814C401.856,290.814 402.383,291.516
-402.383,292.92C402.383,294.205 402.013,295.549
-401.271,296.954C400.529,298.358 399.765,299.464
-398.98,300.273C398.195,301.082 397.671,301.487
-397.409,301.487C397.171,301.487 397.052,301.368 397.052,301.13Z"
+<path d="M395.744,287.423C395.839,286.59 396.041,286.114
+396.351,285.995C396.446,285.947 396.601,285.923
+396.815,285.923L403.918,285.923C404.442,285.923 404.704,286.09
+404.704,286.423C404.704,286.471 404.692,286.578
+404.668,286.744C404.644,286.911 404.591,287.113
+404.507,287.351C404.424,287.589 404.323,287.744
+404.204,287.815C404.061,287.887 403.883,287.922
+403.669,287.922L396.529,287.922C396.006,287.922 395.744,287.756
+395.744,287.423Z"
 style="fill-rule:nonzero;stroke:rgb(255,0,0);stroke-width:0.17px;stroke-linecap:butt;stroke-miterlimit:2;"/>
 <path d="M409.63,294.169C409.63,293.86 409.707,293.669
 409.862,293.598C410.016,293.527 410.272,293.491
@@ -6472,12 +6494,6 @@ style="stroke:rgb(235,235,235);stroke-width:1.49px;"/> </g> </g>
   Figure 4: The mapping of the corners of the frustum to the corners of the clip volume
 </div>
 
-The near plane of our frustum is defined by 4 corners \\((l, t)\\), \\((r, t)\\), \\((r, b)\\) and \\((l, b)\\).
-We want to match these with \\((-1, -1)\\), \\((1, -1)\\), \\((1, 1)\\) and \\((-1, 1)\\) respectively.
-
-**<span class="underline">Note</span>**: If you have a different clip space, you will have to adjust the corners of the near clip plane!
-Vulkan is different from other graphics APIs and uses a downward Y axis, and uses the same clip depth as DirectX (0 to 1).
-
 The mapping of the near frustum plane to the near clip plane is a linear function of the form \\(f(x) = \alpha x + \beta\\).
 We can use the formula to find the slope of the function and then, by replacing the known values in the function, we can find the constant term:
 
@@ -6491,6 +6507,7 @@ Starting with the \\(x\\) coordinate:
 \Rightarrow \quad & f( r) = 1 = \frac{2}{r - l} r + \beta \\\\\\
 \Leftrightarrow \quad &\beta = 1 - \frac{2r}{r-l} =  -\frac{r+l}{r-l}\\\\\\
 \\\\\\
+& f(x\_p) = \frac{2}{r-l} x\_p - \frac{r+l}{r-l} = x\_n\\\\\\
 & x\_n = \frac{2}{r-l} x\_p - \frac{r+l}{r-l}
 \end{aligned}
 
@@ -6504,6 +6521,7 @@ The same goes for finding \\(y\\):
 \Rightarrow \quad     & f(b) = 1 = \frac{2}{b - t} b + \beta \\\\\\
 \Leftrightarrow \quad &\beta = 1 - \frac{2b}{b-t} = -\frac{b+t}{b-t}\\\\\\
 \\\\\\
+& f(y\_p) = \frac{2}{b-t} y\_p - \frac{b+t}{b-t} = y\_n\\\\\\
 & y\_n = \frac{2}{b-t} y\_p - \frac{b+t}{b-t}
 \end{aligned}
 
@@ -6572,11 +6590,11 @@ w\_c
 
 By definition \\(z\_n\\) is :
 
-\\[ z\_n = \frac{z\_c}{w\_c} = \frac{A \* z\_e + B \* w\_e}{-z\_e} \\]
+\\[ z\_n = \frac{z\_c}{w\_c} = \frac{A \times z\_e + B \times w\_e}{-z\_e} \\]
 
 \\(w\_e\\) is always going to be 1.
 
-\\[ z\_n = \frac{z\_c}{w\_c} = \frac{A \* z\_e + B}{-z\_e} \\]
+\\[ z\_n = \frac{z\_c}{w\_c} = \frac{A \times z\_e + B}{-z\_e} \\]
 
 Once again we know that when \\(z\_e\\) is on the near plane \\(z\_n\\) should be \\(1\\) and when on the far plane \\(z\_n\\) should be \\(0\\).
 
@@ -6622,7 +6640,7 @@ Once again we know that when \\(z\_e\\) is on the near plane \\(z\_n\\) should b
 
 Here is our final expression for \\(z\_n\\):
 
-\\[ z\_n = \frac{1}{-z\_e} ({\frac{n}{f-n} \* z\_e + \frac{nf}{f-n}}) \\]
+\\[ z\_n = \frac{1}{-z\_e} \left({\frac{n}{f-n} \times z\_e + \frac{nf}{f-n}}\right) \\]
 
 Our matrix is now complete!
 
@@ -6654,8 +6672,8 @@ Usually a frustum is symmetric, that is \\(l = -r\\) and \\(b = -t\\).
 The matrix becomes a bit simpler:
 
 \begin{aligned}
-& l = -r \Rightarrow l + r = 0 \quad \text{and} \quad  l - r = 2r & = width\\\\\\
-& b = -t \Rightarrow b + t = 0 \quad \text{and} \quad  b - t = -2t & = -height
+& l = -r \Rightarrow l + r = 0 \quad \text{and} \quad  r - l = 2r = width\\\\\\
+& b = -t \Rightarrow b + t = 0 \quad \text{and} \quad  b - t = -2t = -height
 \end{aligned}
 
 \begin{equation}
@@ -6679,7 +6697,7 @@ w\_c
 \end{pmatrix}
 \end{equation}
 
-It's also easier to reason on the field of view and aspect ratios rather than on frustum corners, so let's replace them:
+It's also easier to reason on the field of view and aspect ratios rather than on the width and the height of the near plane, so let's replace them:
 
 <svg width="100%"
 height="100%" viewBox="0 0 849 342" version="1.1"
@@ -7704,8 +7722,10 @@ style="fill:rgb(1,0,1);stroke:black;stroke-width:1px;stroke-dasharray:1,3.01,0,0
 
 
 <div class="figure-caption">
-  Figure 5: Diagram of the FOV
+  Figure 5: Diagram of the field of view
 </div>
+
+We want to replace the coefficients using the width and height: \\(\frac{2n}{width}\\) and \\(-\frac{2c}{height}\\)).
 
 \begin{aligned}
 & \tan\left(\frac{fov\_y}{2}\right) = \frac{\frac{height}{2}}{n} \\\\\\
@@ -7714,8 +7734,8 @@ style="fill:rgb(1,0,1);stroke:black;stroke-width:1px;stroke-dasharray:1,3.01,0,0
 \end{aligned}
 
 \begin{aligned}
-\frac{2n}{width} & = \frac{2n}{width} \frac{height}{height} \\\\\\
-& = \frac{2n}{height} \frac{height}{width} \\\\\\
+\frac{2n}{width} & = \frac{2n}{width} \times \frac{height}{height} \\\\\\
+& = \frac{2n}{height} \times \frac{height}{width} \\\\\\
 & = \frac{2n}{height} \left(\frac{width}{height}\right)^{-1} \\\\\\
 & = \frac{1}{\tan\left(\frac{fov\_y}{2}\right)} \left(\frac{width}{height}\right)^{-1}
 \end{aligned}
