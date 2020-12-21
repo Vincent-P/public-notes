@@ -11,7 +11,6 @@ In most of the computer graphics/opengl/vulkan tutorials online there is only a 
 In these notes I will try to explain the maths behind the perspective projection and give a matrix that works with Vulkan.
 Don't worry you can still follow if you don't use Vulkan and adapt the formulas with **your** settings.
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%"
 height="100%" viewBox="0 0 1485 440" version="1.1"
 xmlns="http://www.w3.org/2000/svg"
@@ -3761,7 +3760,6 @@ After clipping, the hardware will perform a "perspective division" that will tra
 The first step consist of projecting points in eye space on the near plane of the frustum.
 Let's start by finding the values of \\(x\\) and \\(y\\), the depth will come later.
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%"
 height="100%" viewBox="0 0 1184 1002" version="1.1"
 xmlns="http://www.w3.org/2000/svg"
@@ -4766,7 +4764,6 @@ xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAA
 The frustum is a big pyramid with the camera as apex: there are similar triangles for each coordinate.
 Using the Intercept theorem (also known as Thales's theorem) it's easy to find the value of \\(x\_p\\) and \\(y\_p\\).
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%"
 height="100%" viewBox="0 0 1494 601" version="1.1"
 xmlns="http://www.w3.org/2000/svg"
@@ -5506,7 +5503,6 @@ w\_c
 
 Now that we have expressed \\(x\_p\\) and \\(y\_p\\) in terms of \\(x\_e\\) and \\(y\_e\\), let's try to express their normalized device coordinates \\(x\_n\\) and \\(y\_n\\).
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%"
 height="100%" viewBox="0 0 1490 590" version="1.1"
 xmlns="http://www.w3.org/2000/svg"
@@ -6685,7 +6681,6 @@ w\_c
 
 It's also easier to reason on the field of view and aspect ratios rather than on frustum corners, so let's replace them:
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%"
 height="100%" viewBox="0 0 849 342" version="1.1"
 xmlns="http://www.w3.org/2000/svg"
