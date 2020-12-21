@@ -1,0 +1,23 @@
+title = "Super blog"
+author = "Vincent Parizet"
+
+# baseURL = "http://example.org/"
+languageCode = "en-us"
+theme = "contrast-hugo"
+
+[params]
+  minimal = false
+  description = "my blog"
+  math = true
+
+
+[menu]
+  [[menu.notes]]
+    identifier = "notes"
+    name = "Notes"
+    url = "/notes/"
+    weight = 10
+
+
+[markup.goldmark.renderer]
+  unsafe = true

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>C&#43;&#43;: std::optional | My New Hugo Site</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.1" />
+<meta name="description" content="my blog">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/index.css">
+<link rel="canonical" href="/notes/20201219115141-c_std_optional/">
+<link rel="alternate" type="application/rss+xml" href="" title="My New Hugo Site">
+
+<header>
+  
+    <a href="">My New Hugo Site</a>
+  
+  
+    <nav>
+    
+      <a href="/about/">About</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>C&#43;&#43;: std::optional</h1>
+    
+  </header>
+  <dl>
+<dt>tags</dt>
+<dd><a href="/notes/20201218231726-cpp/">cpp</a></dd>
+</dl>
+<p>Basically a ripoff of Rust&rsquo;s <code>std::option</code>.</p>
+<p>One thing to keep in mind when using <code>std::optional</code> is that it doesn&rsquo;t have the same semantics as pointers, this code is perfectly fine:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">auto</span> garbage <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>nullopt;
+<span style="color:#66d9ef">auto</span> even_more_garbage <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>garbage;
+</code></pre></div><p>It doesn&rsquo;t throw any exception and will silently fails.
+The equivalent to Rust&rsquo;s <code>unwrap()</code> is <code>value()</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">auto</span> garbage <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>nullopt;
+<span style="color:#66d9ef">auto</span> not_garbage <span style="color:#f92672">=</span> garbage.value(); <span style="color:#75715e">// &lt;-- Will throw a std::bad_optional_access exception!
+</span></code></pre></div>
+</article>
+
+
+
+</html>

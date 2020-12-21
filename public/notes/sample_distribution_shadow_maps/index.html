@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Sample Distribution Shadow Maps | My New Hugo Site</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.1" />
+<meta name="description" content="my blog">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/index.css">
+<link rel="canonical" href="/notes/sample_distribution_shadow_maps/">
+<link rel="alternate" type="application/rss+xml" href="" title="My New Hugo Site">
+
+<header>
+  
+    <a href="">My New Hugo Site</a>
+  
+  
+    <nav>
+    
+      <a href="/about/">About</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Sample Distribution Shadow Maps</h1>
+    
+  </header>
+  <dl>
+<dt>link</dt>
+<dd><a href="http://advances.realtimerendering.com/s2010/Lauritzen-SDSM(SIGGRAPH%202010%20Advanced%20RealTime%20Rendering%20Course).pdf">http://advances.realtimerendering.com/s2010/Lauritzen-SDSM(SIGGRAPH%202010%20Advanced%20RealTime%20Rendering%20Course).pdf</a></dd>
+<dt>tags</dt>
+<dd><a href="/notes/20201215183931-graphics_programming/">graphics programming</a>, <a href="/notes/20201215183947-shadow_mapping/">shadow mapping</a></dd>
+</dl>
+<h2 id="algorithm">Algorithm</h2>
+<p>Basically PSSM but instead of partitioning the entire frustum, tight bounds are used.</p>
+<p>Two partitioning variants:</p>
+<ul>
+<li>K-means clustering: place partitions where there are a lot of samples, good results for average error</li>
+<li>Adaptive logarithmic: avoids gaps in Z</li>
+</ul>
+<p>But these two approaches require a depth histogram and are very situational.
+A simpler min/max reduction with a basic logarithmic scheme is recommended.</p>
+<h2 id="advantages">Advantages</h2>
+<ul>
+<li>Sometimes faster than traditional PSSM because less geometry gets rendered.</li>
+<li>Sub-pixel shadow resolution with sufficient partition resolution (~ screen res.)</li>
+</ul>
+<h2 id="possible-improvements">Possible improvements</h2>
+<ul>
+<li>better partitioning scheme</li>
+<li>smarter/more expensive algorithms to address projective aliasing</li>
+</ul>
+
+</article>
+
+
+
+</html>

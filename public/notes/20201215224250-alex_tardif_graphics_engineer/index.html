@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Alex Tardif: Area Lights | My New Hugo Site</title>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.79.1" />
+<meta name="description" content="my blog">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/index.css">
+<link rel="canonical" href="/notes/20201215224250-alex_tardif_graphics_engineer/">
+<link rel="alternate" type="application/rss+xml" href="" title="My New Hugo Site">
+
+<header>
+  
+    <a href="">My New Hugo Site</a>
+  
+  
+    <nav>
+    
+      <a href="/about/">About</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Alex Tardif: Area Lights</h1>
+    
+  </header>
+  <dl>
+<dt>link</dt>
+<dd><a href="http://www.alextardif.com/arealights.html">http://www.alextardif.com/arealights.html</a></dd>
+<dt>tags</dt>
+<dd><a href="/notes/20201215183931-graphics_programming/">graphics programming</a>, <a href="/notes/20201215224331-area_lights/">area lights</a>, <a href="/notes/20201215224339-lighting/">lighting</a></dd>
+</dl>
+<p>All lighting computations are done in view-space (not world-space!)
+This implementation is based on a deferred renderer,it renders geometry in the shape of the lights and uses a stencil pass to compute lighting only on pixels affected by lights.</p>
+<h2 id="sphere-area-lights">Sphere Area Lights</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-glsl" data-lang="glsl">float3 r <span style="color:#f92672">=</span> reflect(<span style="color:#f92672">-</span>viewDir, normal);
+float3 L <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView.xyz <span style="color:#f92672">-</span> positionView;
+float3 centerToRay <span style="color:#f92672">=</span> (dot(L, r) <span style="color:#f92672">*</span> r) <span style="color:#f92672">-</span> L;
+float3 closestPoint <span style="color:#f92672">=</span> L <span style="color:#f92672">+</span> centerToRay <span style="color:#f92672">*</span> saturate(sphereRadius <span style="color:#f92672">/</span> length(centerToRay));
+L <span style="color:#f92672">=</span> normalize(closestPoint);
+<span style="color:#66d9ef">float</span> distLight <span style="color:#f92672">=</span> length(closestPoint);
+...
+<span style="color:#66d9ef">float</span> alphaPrime <span style="color:#f92672">=</span> saturate(sphereRadius<span style="color:#f92672">/</span>(distL<span style="color:#f92672">*</span><span style="color:#ae81ff">2.0</span>)<span style="color:#f92672">+</span>alpha);
+...
+<span style="color:#66d9ef">float</span> falloff <span style="color:#f92672">=</span> pow(saturate(<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> pow(distLight<span style="color:#f92672">/</span>(lightRadius), <span style="color:#ae81ff">4</span>)), <span style="color:#ae81ff">2</span>) <span style="color:#f92672">/</span> ((distLight <span style="color:#f92672">*</span> distLight) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1.0</span>);
+float3 light <span style="color:#f92672">=</span> (specularFactor <span style="color:#f92672">+</span> diffuseFactor) <span style="color:#f92672">*</span> falloff <span style="color:#f92672">*</span> lightColor <span style="color:#f92672">*</span> luminosity;
+</code></pre></div><h2 id="tube-area-lights">Tube Area Lights</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-glsl" data-lang="glsl">float3 L0 <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView.xyz <span style="color:#f92672">-</span> positionView;
+float3 L1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView2.xyz <span style="color:#f92672">-</span> positionView;
+
+<span style="color:#66d9ef">float</span> distL0 <span style="color:#f92672">=</span> length( L0 );
+<span style="color:#66d9ef">float</span> distL1 <span style="color:#f92672">=</span> length( L1 );
+<span style="color:#66d9ef">float</span> NoL0 <span style="color:#f92672">=</span> dot( L0, normal ) <span style="color:#f92672">/</span> ( <span style="color:#ae81ff">2.0</span> <span style="color:#f92672">*</span> distL0 );
+<span style="color:#66d9ef">float</span> NoL1 <span style="color:#f92672">=</span> dot( L1, normal ) <span style="color:#f92672">/</span> ( <span style="color:#ae81ff">2.0</span> <span style="color:#f92672">*</span> distL1 );
+<span style="color:#66d9ef">float</span> NoL <span style="color:#f92672">=</span> ( <span style="color:#ae81ff">2.0</span> <span style="color:#f92672">*</span> saturate( NoL0 <span style="color:#f92672">+</span> NoL1 )) <span style="color:#f92672">/</span> ( distL0 <span style="color:#f92672">*</span> distL1 <span style="color:#f92672">+</span> dot( L0, L1 ) <span style="color:#f92672">+</span> <span style="color:#ae81ff">2.0</span> );
+float3 Ldist <span style="color:#f92672">=</span> L1 <span style="color:#f92672">-</span> L0;
+<span style="color:#66d9ef">float</span> RoLd <span style="color:#f92672">=</span> dot( r, Ldist);
+<span style="color:#66d9ef">float</span> distLd <span style="color:#f92672">=</span> length(Ldist);
+<span style="color:#66d9ef">float</span> t <span style="color:#f92672">=</span> ( dot( r, L0 ) <span style="color:#f92672">*</span> RoLd <span style="color:#f92672">-</span> dot( L0, Ldist) ) <span style="color:#f92672">/</span> ( distLd <span style="color:#f92672">*</span> distLd <span style="color:#f92672">-</span> RoLd <span style="color:#f92672">*</span> RoLd );
+
+float3 closestPoint <span style="color:#f92672">=</span> L0 <span style="color:#f92672">+</span> Ldist <span style="color:#f92672">*</span> saturate(t);
+float3 centerToRay <span style="color:#f92672">=</span> dot(closestPoint, r) <span style="color:#f92672">*</span> r <span style="color:#f92672">-</span> closestPoint;
+closestPoint <span style="color:#f92672">=</span> closestPoint <span style="color:#f92672">+</span> centerToRay <span style="color:#f92672">*</span> saturate(tubeRadius <span style="color:#f92672">/</span> length(centerToRay));
+float3 L <span style="color:#f92672">=</span> normalize(closestPoint);
+<span style="color:#66d9ef">float</span> distLight <span style="color:#f92672">=</span> length(closestPoint);
+</code></pre></div><h2 id="rectangular-area-lights">Rectangular Area Lights</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-glsl" data-lang="glsl">float3 v0 <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView.xyz <span style="color:#f92672">-</span> positionView;
+float3 v1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView2.xyz <span style="color:#f92672">-</span> positionView;
+float3 v2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView3.xyz <span style="color:#f92672">-</span> positionView;
+float3 v3 <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionView4.xyz <span style="color:#f92672">-</span> positionView;
+
+<span style="color:#66d9ef">float</span> facingCheck <span style="color:#f92672">=</span> dot( v0, cross( ( <span style="color:#66d9ef">input</span>.lightPositionView3.xyz <span style="color:#f92672">-</span> <span style="color:#66d9ef">input</span>.lightPositionView.xyz ).xyz, ( <span style="color:#66d9ef">input</span>.lightPositionView2.xyz <span style="color:#f92672">-</span> <span style="color:#66d9ef">input</span>.lightPositionView.xyz ).xyz ) );
+
+<span style="color:#66d9ef">if</span> (facingCheck <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.0</span>)
+{
+    <span style="color:#66d9ef">return</span> float4(<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">1.0</span>);
+}
+...
+float3 n0 <span style="color:#f92672">=</span> normalize ( cross (v0 , v1 ));
+float3 n1 <span style="color:#f92672">=</span> normalize ( cross (v1 , v2 ));
+float3 n2 <span style="color:#f92672">=</span> normalize ( cross (v2 , v3 ));
+float3 n3 <span style="color:#f92672">=</span> normalize ( cross (v3 , v0 ));
+<span style="color:#66d9ef">float</span> g0 <span style="color:#f92672">=</span> acos ( dot (<span style="color:#f92672">-</span>n0 , n1 ));
+<span style="color:#66d9ef">float</span> g1 <span style="color:#f92672">=</span> acos ( dot (<span style="color:#f92672">-</span>n1 , n2 ));
+<span style="color:#66d9ef">float</span> g2 <span style="color:#f92672">=</span> acos ( dot (<span style="color:#f92672">-</span>n2 , n3 ));
+<span style="color:#66d9ef">float</span> g3 <span style="color:#f92672">=</span> acos ( dot (<span style="color:#f92672">-</span>n3 , n0 ));
+
+<span style="color:#66d9ef">float</span> solidAngle <span style="color:#f92672">=</span> g0 <span style="color:#f92672">+</span> g1 <span style="color:#f92672">+</span> g2 <span style="color:#f92672">+</span> g3 <span style="color:#f92672">-</span> <span style="color:#ae81ff">2.0</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">3.14159265359</span>;
+
+<span style="color:#66d9ef">float</span> NoL <span style="color:#f92672">=</span> solidAngle <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.2</span> <span style="color:#f92672">*</span> (
+    saturate ( dot( normalize ( v0 ), normal ) ) <span style="color:#f92672">+</span>
+    saturate ( dot( normalize ( v1 ) , normal ) )<span style="color:#f92672">+</span>
+    saturate ( dot( normalize ( v2 ) , normal ) )<span style="color:#f92672">+</span>
+    saturate ( dot( normalize ( v3 ) , normal ) )<span style="color:#f92672">+</span>
+    saturate ( dot( normalize ( <span style="color:#66d9ef">input</span>.lightPositionViewCenter.xyz <span style="color:#f92672">-</span> positionView ) , normal )));
+...
+float3 intersectPoint <span style="color:#f92672">=</span> CalculatePlaneIntersection(positionView, r, lightDir, <span style="color:#66d9ef">input</span>.lightPositionViewCenter.xyz);
+...
+float3 CalculatePlaneIntersection(float3 viewPosition, float3 reflectionVector, float3 lightDirection, float3 rectangleLightCenter)
+{
+    <span style="color:#66d9ef">return</span> viewPosition <span style="color:#f92672">+</span> reflectionVector <span style="color:#f92672">*</span> (dot(lightDirection,rectangleLightCenter<span style="color:#f92672">-</span>viewPosition)<span style="color:#f92672">/</span>dot(lightDirection,reflectionVector));
+}
+...
+float3 intersectionVector <span style="color:#f92672">=</span> intersectPoint <span style="color:#f92672">-</span> <span style="color:#66d9ef">input</span>.lightPositionViewCenter.xyz;
+float2 intersectPlanePoint <span style="color:#f92672">=</span> float2(dot(intersectionVector,right), dot(intersectionVector,up));
+float2 nearest2DPoint <span style="color:#f92672">=</span> float2(clamp(intersectPlanePoint.x, <span style="color:#f92672">-</span>lightSizeX, lightSizeX), clamp(intersectPlanePoint.y, <span style="color:#f92672">-</span>lightSizeY, lightSizeY));
+...
+float3 specularFactor <span style="color:#f92672">=</span> float3(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>);
+<span style="color:#66d9ef">float</span> specularAmount <span style="color:#f92672">=</span> dot(r,lightDir);
+<span style="color:#66d9ef">if</span> (specularAmount <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.0</span>)
+{
+    <span style="color:#66d9ef">float</span> specFactor <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> clamp(length(nearest2DPoint <span style="color:#f92672">-</span> intersectPlanePoint) <span style="color:#f92672">*</span> pow((<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> roughness), <span style="color:#ae81ff">2</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">32.0</span>, <span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">1.0</span>);
+    specularFactor <span style="color:#f92672">+=</span> surfaceSpec <span style="color:#f92672">*</span> specFactor <span style="color:#f92672">*</span> specularAmount <span style="color:#f92672">*</span> NoL;
+}
+...
+float3 nearestPoint <span style="color:#f92672">=</span> <span style="color:#66d9ef">input</span>.lightPositionViewCenter.xyz <span style="color:#f92672">+</span> (right <span style="color:#f92672">*</span> nearest2DPoint.x <span style="color:#f92672">+</span> up <span style="color:#f92672">*</span> nearest2DPoint.y);
+<span style="color:#66d9ef">float</span> dist <span style="color:#f92672">=</span> distance(positionView, nearestPoint);
+<span style="color:#66d9ef">float</span> falloff <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> saturate(dist<span style="color:#f92672">/</span>lightRadius);
+...
+float3 light <span style="color:#f92672">=</span> (specularFactor <span style="color:#f92672">+</span> diffuseFactor) <span style="color:#f92672">*</span> falloff <span style="color:#f92672">*</span> lightColor <span style="color:#f92672">*</span> luminosity;
+</code></pre></div>
+</article>
+
+
+
+</html>
