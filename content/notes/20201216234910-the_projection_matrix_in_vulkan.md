@@ -7725,7 +7725,7 @@ style="fill:rgb(1,0,1);stroke:black;stroke-width:1px;stroke-dasharray:1,3.01,0,0
   Figure 5: Diagram of the field of view
 </div>
 
-We want to replace the coefficients using the width and height: \\(\frac{2n}{width}\\) and \\(-\frac{2c}{height}\\)).
+We want to replace the coefficients using the width and height: \\(\frac{2n}{width}\\) and \\(-\frac{2n}{height}\\).
 
 \begin{aligned}
 & \tan\left(\frac{fov\_y}{2}\right) = \frac{\frac{height}{2}}{n} \\\\\\
