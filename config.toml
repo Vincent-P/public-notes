@@ -6,7 +6,7 @@ languageCode = "en-us"
 theme = "contrast-hugo"
 
 [params]
-  minimal = false
+  minimal = true
   description = "my blog"
   math = true
 
