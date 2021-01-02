@@ -8,6 +8,8 @@
 {{- end }}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="{{ .Site.BaseURL }}css/{{ if .Site.Params.minimal }}minimal.css{{else}}index.css{{ end }}">
+<link rel="stylesheet" href="{{ .Site.BaseURL }}css/syntax.css">
+<link rel="stylesheet" href="{{ .Site.BaseURL }}css/custom.css">
 <link rel="canonical" href="{{ .Permalink }}">
 <link rel="alternate" type="application/rss+xml" href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" title="{{ .Site.Title }}">
 {{- if or .Params.math .Site.Params.math }}

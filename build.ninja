@@ -1,40 +1,44 @@
 
 rule org2md
-  command = emacs --batch -l ~/.emacs.d/batch.el -l publish.el --eval "(jethro/publish \"$in\")"
+  command = emacs --batch -l ~/.config/emacs/batch.el -l publish.el --eval "(jethro/publish \"$in\")"
   description = org2md $in
 
-build content/posts/20201215183931-graphics_programming.md: org2md ../org/roam/20201215183931-graphics_programming.org
+build content/posts/20201216234910-the_projection_matrix_in_vulkan.md: org2md ../org/roam/20201216234910-the_projection_matrix_in_vulkan.org
+
+build content/posts/20201218231726-cpp.md: org2md ../org/roam/20201218231726-cpp.org
+
+build content/posts/sample_distribution_shadow_maps.md: org2md ../org/roam/sample_distribution_shadow_maps.org
+
+build content/posts/20201221173231-advances_in_real_time_rendering_siggraph_2016.md: org2md ../org/roam/20201221173231-advances_in_real_time_rendering_siggraph_2016.org
+
+build content/posts/20201219115141-c_std_optional.md: org2md ../org/roam/20201219115141-c_std_optional.org
+
+build content/posts/20201221172958-gdc_vault_temporal_reprojection_anti_aliasing_in_inside.md: org2md ../org/roam/20201221172958-gdc_vault_temporal_reprojection_anti_aliasing_in_inside.org
 
 build content/posts/20201215183947-shadow_mapping.md: org2md ../org/roam/20201215183947-shadow_mapping.org
+
+build content/posts/20201216235016-maths.md: org2md ../org/roam/20201216235016-maths.org
+
+build content/posts/20201215225804-alex_tardif_graphics_engineer.md: org2md ../org/roam/20201215225804-alex_tardif_graphics_engineer.org
+
+build content/posts/20201221173148-temporal_integration.md: org2md ../org/roam/20201221173148-temporal_integration.org
+
+build content/posts/20201216234943-vulkan.md: org2md ../org/roam/20201216234943-vulkan.org
+
+build content/posts/20201215224339-lighting.md: org2md ../org/roam/20201215224339-lighting.org
+
+build content/posts/20201218231643-modern_c_for_c_peeps.md: org2md ../org/roam/20201218231643-modern_c_for_c_peeps.org
 
 build content/posts/20201215224250-alex_tardif_graphics_engineer.md: org2md ../org/roam/20201215224250-alex_tardif_graphics_engineer.org
 
 build content/posts/20201215224331-area_lights.md: org2md ../org/roam/20201215224331-area_lights.org
 
-build content/posts/20201215224339-lighting.md: org2md ../org/roam/20201215224339-lighting.org
-
-build content/posts/20201215225804-alex_tardif_graphics_engineer.md: org2md ../org/roam/20201215225804-alex_tardif_graphics_engineer.org
-
-build content/posts/20201216234910-the_projection_matrix_in_vulkan.md: org2md ../org/roam/20201216234910-the_projection_matrix_in_vulkan.org
-
-build content/posts/20201216234943-vulkan.md: org2md ../org/roam/20201216234943-vulkan.org
-
-build content/posts/20201216235016-maths.md: org2md ../org/roam/20201216235016-maths.org
-
 build content/posts/20201216235026-linear_algebra.md: org2md ../org/roam/20201216235026-linear_algebra.org
-
-build content/posts/20201218231643-modern_c_for_c_peeps.md: org2md ../org/roam/20201218231643-modern_c_for_c_peeps.org
-
-build content/posts/20201218231726-cpp.md: org2md ../org/roam/20201218231726-cpp.org
-
-build content/posts/20201219115141-c_std_optional.md: org2md ../org/roam/20201219115141-c_std_optional.org
 
 build content/posts/20201219215133-private.md: org2md ../org/roam/20201219215133-private.org
 
-build content/posts/20201221172958-gdc_vault_temporal_reprojection_anti_aliasing_in_inside.md: org2md ../org/roam/20201221172958-gdc_vault_temporal_reprojection_anti_aliasing_in_inside.org
+build content/posts/20201225231154-gpu_driven_rendering_experiments_final_pptx_microsoft_powerpoint_online.md: org2md ../org/roam/20201225231154-gpu_driven_rendering_experiments_final_pptx_microsoft_powerpoint_online.org
 
-build content/posts/20201221173148-temporal_integration.md: org2md ../org/roam/20201221173148-temporal_integration.org
+build content/posts/20201225231240-gpu_driven_architecture.md: org2md ../org/roam/20201225231240-gpu_driven_architecture.org
 
-build content/posts/20201221173231-advances_in_real_time_rendering_siggraph_2016.md: org2md ../org/roam/20201221173231-advances_in_real_time_rendering_siggraph_2016.org
-
-build content/posts/sample_distribution_shadow_maps.md: org2md ../org/roam/sample_distribution_shadow_maps.org
+build content/posts/20201215183931-graphics_programming.md: org2md ../org/roam/20201215183931-graphics_programming.org

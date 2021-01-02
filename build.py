@@ -9,7 +9,7 @@ print(files)
 with open('build.ninja', 'w') as ninja_file:
     ninja_file.write("""
 rule org2md
-  command = emacs --batch -l ~/.emacs.d/batch.el -l publish.el --eval \"(jethro/publish \\"$in\\")"
+  command = emacs --batch -l ~/.config/emacs/batch.el -l publish.el --eval \"(jethro/publish \\"$in\\")"
   description = org2md $in
 """)
 

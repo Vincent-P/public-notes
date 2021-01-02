@@ -1,0 +1,15 @@
+#everything-black path, #everything-black0 path, #everything-black1 path, #everything-black2 path
+{
+    color: #1c1d22 !important;
+    fill: #1c1d22 !important;
+    stroke: #1c1d22 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    #everything-black path, #everything-black0 path, #everything-black1 path, #everything-black2 path
+    {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+    }
+}
