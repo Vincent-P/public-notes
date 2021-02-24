@@ -1,8 +1,7 @@
 title = "Super blog"
 author = "Vincent Parizet"
 
-# baseURL = "https://vincent-p.github.io/"
-baseURL = "http://localhost:1313"
+baseURL = "https://vincent-p.github.io/"
 languageCode = "en-us"
 theme = "my-theme"
 
