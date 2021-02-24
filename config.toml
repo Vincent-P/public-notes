@@ -1,9 +1,10 @@
 title = "Super blog"
 author = "Vincent Parizet"
 
-baseURL = "https://vincent-p.github.io/"
+# baseURL = "https://vincent-p.github.io/"
+baseURL = "http://localhost:1313"
 languageCode = "en-us"
-theme = "contrast-hugo"
+theme = "my-theme"
 
 pygmentsUseClasses = true
 
