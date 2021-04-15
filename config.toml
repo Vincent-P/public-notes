@@ -6,7 +6,6 @@ languageCode = "en-us"
 theme = "my-theme"
 
 enableRobotsTXT = true
-googleAnalytics = "G-F7623YHVXT"
 
 pygmentsUseClasses = true
 
